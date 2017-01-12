@@ -23,6 +23,11 @@ public class IdWorker {
     private long sequence = 0L;
     private long lastTimestamp = -1L;
 
+    public static  long getId(){
+        IdWorker idWorker = new IdWorker(1,8);
+        return idWorker.nextId();
+    }
+
     public IdWorker(long workerId, long datacenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
@@ -34,7 +39,7 @@ public class IdWorker {
         this.datacenterId = datacenterId;
     }
 
-    public synchronized long nextId() {
+    private synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));

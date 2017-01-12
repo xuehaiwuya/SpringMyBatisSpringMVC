@@ -6,10 +6,30 @@
 
 
 <mapper namespace="com.panxiang.system.dao.UserDao">
-
-    <select id="getUser" resultType="User" parameterType="long">
-        select id,name,pwd from tb_user
-        where id = #{id}
+    <!--设置User类和数据库中表的字段一一对应，注意数据库字段和User类中的字段名称不致，此处一定要！-->
+    <resultMap id="BaseResultMap" type="com.panxiang.system.entities.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!-- 查询单条记录 -->
+    <select id="getUser" resultMap="BaseResultMap" parameterType="long" useCache="true">
+        SELECT * FROM tb_user
+        WHERE id = #{id}
     </select>
 
+    <insert id="saveUser" flushCache="true" parameterType="User">
+        INSERT INTO tb_user (id,name,pwd)
+        VALUES (#{id},#{name},#{pwd})
+    </insert>
+
+    <update id="updateUser" flushCache="true" parameterType="User">
+        UPDATE tb_user SET
+        pwd = #{pwd}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="long" flushCache="true">
+        DELETE FROM tb_user WHERE id=#{id}
+    </delete>
 </mapper>
