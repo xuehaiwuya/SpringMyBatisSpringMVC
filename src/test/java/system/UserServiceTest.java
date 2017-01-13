@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  */
 public class UserServiceTest extends SpringTestBase{
     @Resource
-   private UserService userService;
+   private UserService  userService;
 
     @Test
     public void testGetUser(){
